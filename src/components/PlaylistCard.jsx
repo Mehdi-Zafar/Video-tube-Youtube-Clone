@@ -3,7 +3,7 @@ import { Typography,Card,CardContent,CardMedia } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { demoThumbnailUrl,demoVideoUrl,demoVideoTitle,demoChannelUrl,demoChannelTitle } from "../utils/constants";
 
-const VideoCard = ({video:{id:{videoId},snippet}}) => {
+const PlaylistCard = ({playlist:{id:{playlistId},snippet}}) => {
 
     function unEscape(htmlStr) {
         htmlStr = htmlStr.replace(/&lt;/g , "<");	 
@@ -14,21 +14,30 @@ const VideoCard = ({video:{id:{videoId},snippet}}) => {
         return htmlStr;
     }
 
+    console.log(snippet)
+
+    function playlistTag(){
+        return(
+            <div className="playlist-tag">Playlist</div>
+        )
+    }
+
     return ( 
         <Card
         sx={{width:{xs:'280px',sm:'330px',md:'260px'},borderRadius:'0',boxShadow:'none',transition:'0.5s',margin:{xs:'auto'}}}
         className="video-card"
         title={unEscape(snippet?.title)}
         >
-            <Link to={videoId ? `/video/${videoId}`:snippet?.resourceId?.videoId ? `/video/${snippet?.resourceId?.videoId}` : demoVideoUrl}>
+            <Link to={playlistId ? `/playlist/${playlistId}`:demoVideoUrl}>
                 <CardMedia 
                 image={snippet?.thumbnails?.high?.url || demoThumbnailUrl}
                 alt={unEscape(snippet?.title)}
-                sx={{width:'100%',height:140}}
+                sx={{width:'100%',height:140,position:'relative'}}
+                children={playlistTag()}
                 />
             </Link>
             <CardContent sx={{backgroundColor:'#301948',height:'80px'}}>
-                <Link to={videoId ? `/video/${videoId}`:snippet?.resourceId?.videoId ? `/video/${snippet?.resourceId?.videoId}` : demoVideoUrl}>
+                <Link to={playlistId ? `/playlist/${playlistId}`:demoVideoUrl}>
                     <Typography variant="subtitle1" fontWeight="bold" color="#ffede7">
                         {unEscape(snippet?.title.slice(0,45))+' ...' || demoVideoTitle.slice(0,45)}
                     </Typography>
@@ -44,4 +53,4 @@ const VideoCard = ({video:{id:{videoId},snippet}}) => {
      );
 }
  
-export default VideoCard;
+export default PlaylistCard;

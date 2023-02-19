@@ -1,28 +1,34 @@
-import { useState,useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState,useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { fetchFromApi } from "../utils/fetchFromApi"
 import { Box } from "@mui/material";
-import {Videos,ChannelCard, Loader} from './';
-import { fetchFromApi } from "../utils/fetchFromApi";
+import {Videos,ChannelCard,Loader} from './';
 
-const ChannelDetail = () => {
-    const [ChannelDetail,setChannelDetail] = useState(null)
-    const [videos,setVideos] = useState(null)
+
+const PlaylistDetail = () => {
+
+    const [playlistDetail,setPlaylistDetail] = useState(null)
+    const [channelDetail,setChannelDetail] = useState(null)
     const [loading,setLoading] = useState(false)
-    const {id} = useParams();
+    const {id} = useParams()
 
     useEffect(()=>{
         setLoading(true)
-        fetchFromApi(`channels?part=snippet&id=${id}`)
-            .then((data)=>setChannelDetail(data?.items[0]))
-
-        fetchFromApi(`search?channelId=${id}&part=snippet&order=date`)
+        fetchFromApi(`playlistItems?playlistId=${id}&part=snippet`)
             .then((data)=>{
-                setVideos(data?.items)
-                setLoading(false)
+                setPlaylistDetail(data.items)
             })
     },[id])
 
-    
+    useEffect(()=>{
+        if(playlistDetail !== null){
+            fetchFromApi(`channels?part=snippet&id=${playlistDetail[0]?.snippet?.channelId}`)
+            .then((data)=>{
+                setChannelDetail(data?.items[0])
+                setLoading(false)
+            })
+        }
+    },[playlistDetail])
 
     if(loading) return <Loader/>;
 
@@ -38,14 +44,13 @@ const ChannelDetail = () => {
                     width:'100%',
                     height:'150px'
                 }}/>
-                    <ChannelCard channel={ChannelDetail} marginTop="-100px"/>
+                    <ChannelCard channel={channelDetail} marginTop="-100px"/>
             </Box>
             <Box display="flex" p="2">
-                {/* <Box sx={{mr:{sm:'100px'}}}/> */}
-                <Videos videos={videos}/>
+                <Videos videos={playlistDetail}/>
             </Box>
         </Box>
      );
 }
  
-export default ChannelDetail;
+export default PlaylistDetail;

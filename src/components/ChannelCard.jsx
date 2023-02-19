@@ -2,6 +2,7 @@ import { Box,CardContent,CardMedia,Typography } from "@mui/material";
 import { CheckCircle } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { demoProfilePicture } from "../utils/constants";
+import millify from "millify";
 
 const ChannelCard = ({channel,marginTop}) => {
     return ( 
@@ -18,7 +19,7 @@ const ChannelCard = ({channel,marginTop}) => {
             marginTop:marginTop
         }}
         >
-            <Link to={`/channel/${channel?.id?.channelId}`}>
+            <Link to={channel?.id?.channelId ? `/channel/${channel?.id?.channelId}`:`/channel/${channel?.id}`}>
                 <CardContent sx={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',textAlign:'center',color:'#fff'}}>
                     <CardMedia
                     image={channel?.snippet?.thumbnails?.high?.url || demoProfilePicture}
@@ -31,7 +32,7 @@ const ChannelCard = ({channel,marginTop}) => {
                     </Typography>
                     {channel?.statistics?.subscriberCount && (
                         <Typography>
-                            {parseInt(channel?.statistics?.subscriberCount).toLocaleString()} Subscribers
+                            {millify(channel?.statistics?.subscriberCount)} Subscribers
                         </Typography>
                     )}
                 </CardContent>

@@ -1,5 +1,5 @@
 import { createBrowserRouter,Outlet,createRoutesFromElements,Route,RouterProvider } from "react-router-dom"
-import { ChannelDetail, VideoDetail, SearchFeed, Navbar, Feed } from './components';
+import { ChannelDetail, VideoDetail, SearchFeed, Navbar, Feed,PlaylistDetail } from './components';
 import { Box, ThemeProvider,createTheme } from "@mui/material";
 
 function AppLayout(){
@@ -17,6 +17,7 @@ const router = createBrowserRouter(
       <Route index element={<Feed />}/>
       <Route path="video/:id" element={<VideoDetail />} />
       <Route path="channel/:id" element={<ChannelDetail />} />
+      <Route path="playlist/:id" element={<PlaylistDetail/>}/>
       <Route path="search/:searchTerm" element={<SearchFeed />} />
     </Route>
   )

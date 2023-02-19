@@ -1,10 +1,11 @@
 import { useState,useEffect } from "react";
 import { Link,useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
-import { Typography,Box,Stack } from "@mui/material";
+import { Typography,Box,Stack, Avatar } from "@mui/material";
 import { CheckCircle, SettingsInputSvideoSharp } from "@mui/icons-material";
 import {Videos,Loader} from './'
 import { fetchFromApi } from "../utils/fetchFromApi";
+import millify from "millify";
 
 const VideoDetail = () => {
 
@@ -24,6 +25,8 @@ const VideoDetail = () => {
         window.scrollTo(0, 0);
     })
 
+    console.log(videoDetail)
+
     if(!videoDetail?.snippet) return <Loader/>;
 
     const {snippet:{title,channelId,channelTitle},statistics:{viewCount,likeCount}} = videoDetail;
@@ -37,19 +40,19 @@ const VideoDetail = () => {
                         <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
                             {title}
                         </Typography>
-                        <Stack direction="row" justifyContent="space-between" sx={{color:'#fff'}} py={1} px={2}>
+                        <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{color:'#fff',flexDirection:{xs:"column",sm:"row"},justifyContent:{xs:"center",sm:"space-between"}}} py={1} px={2}>
                             <Link to={`/channel/${channelId}`}>
-                                <Typography variant={{sm:'subtitle1',md:'h6'}} color="#fff">
-                                    {channelTitle}
+                                <Typography variant={{xs:'subtitle2',sm:'subtitle1',md:'h6'}} color="#fff">
+                                    {channelTitle}&nbsp;
                                     <CheckCircle sx={{fontSize:'12px',color:'gray',ml:'5px'}}/>
                                 </Typography>
                             </Link>
-                            <Stack direction="row" gap="20px" alignItems="center">
+                            <Stack direction="row" gap="20px" alignItems="center" sx={{mt:{xs:'10px',sm:'0px'}}}>
                                 <Typography variant="body1" sx={{opacity:0.7}}>
-                                    {parseInt(viewCount).toLocaleString()} views
+                                    {millify(viewCount)} views
                                 </Typography>
                                 <Typography variant="body1" sx={{opacity:0.7}}>
-                                    {parseInt(likeCount).toLocaleString()} likes
+                                    {millify(likeCount)} likes
                                 </Typography>
                             </Stack>
                         </Stack>
